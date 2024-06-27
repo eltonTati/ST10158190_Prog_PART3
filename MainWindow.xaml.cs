@@ -90,9 +90,6 @@ namespace RecipeApp
                 MessageBox.Show("No filtered recipes available to display.");
             }
 
-            // Clear the existing items
-            RecipeListBox.Items.Clear();
-
             // Ensure that the property name "Name" exists in the Recipe class
             if (typeof(Recipe).GetProperty("Name") == null)
             {
@@ -100,13 +97,13 @@ namespace RecipeApp
                 return;
             }
 
+            // Set the ItemsSource to null before assigning the new ItemsSource
+            RecipeListBox.ItemsSource = null;
+
             // Set the ItemsSource
             RecipeListBox.ItemsSource = filteredRecipes ?? recipes;
             RecipeListBox.DisplayMemberPath = "Name";
-            RecipeListBox.Items.Refresh(); // Refresh the ListBox to ensure it displays the updated items
         }
-
-
 
     }
 }
