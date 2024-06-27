@@ -79,9 +79,34 @@ namespace RecipeApp
         }
         private void UpdateRecipeListBox(List<Recipe> filteredRecipes = null)
         {
+            if (filteredRecipes == null && recipes == null)
+            {
+                MessageBox.Show("No recipes available to display.");
+                return;
+            }
+
+            if (filteredRecipes != null && filteredRecipes.Count == 0)
+            {
+                MessageBox.Show("No filtered recipes available to display.");
+            }
+
+            // Clear the existing items
+            RecipeListBox.Items.Clear();
+
+            // Ensure that the property name "Name" exists in the Recipe class
+            if (typeof(Recipe).GetProperty("Name") == null)
+            {
+                MessageBox.Show("The Recipe class does not contain a property named 'Name'.");
+                return;
+            }
+
+            // Set the ItemsSource
             RecipeListBox.ItemsSource = filteredRecipes ?? recipes;
             RecipeListBox.DisplayMemberPath = "Name";
+            RecipeListBox.Items.Refresh(); // Refresh the ListBox to ensure it displays the updated items
         }
+
+
 
     }
 }
