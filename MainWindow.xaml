@@ -3,24 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Recipe Manager" Height="550" Width="800"
         Background="#282c34">
-
-    <Window.Resources>
-        <!-- Define some colors -->
+       <!-- This is may main, where i have designed and styled the first view of my program -->
+        <Window.Resources>
+           
+        <!-- Here I Define some colors for a better styling  -->
         <Color x:Key="PrimaryColor">#282c34</Color>
         <Color x:Key="SecondaryColor">#61dafb</Color>
         <Color x:Key="AccentColor">#61dafb</Color>
         <Color x:Key="TextColor">#ffffff</Color>
 
-        <!-- Define some brushes -->
+        <!-- Here I define some brushes -->
         <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
         <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"/>
         <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
 
-        <!-- Define a font family -->
+        <!-- Here I define a font family -->
         <FontFamily x:Key="PrimaryFont">Segoe UI</FontFamily>
 
-        <!-- Style for TextBlock -->
+        <!-- Here I define the Style for TextBlock -->
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
             <Setter Property="FontSize" Value="16"/>
@@ -29,7 +30,7 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
-        <!-- Style for TextBox -->
+        <!-- Here I define Style for TextBox -->
         <Style TargetType="TextBox">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
             <Setter Property="FontSize" Value="16"/>
@@ -68,7 +69,7 @@
             <Setter Property="BorderThickness" Value="2"/>
         </Style>
     </Window.Resources>
-
+         <!-- here is the design or structure of my main view -->
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

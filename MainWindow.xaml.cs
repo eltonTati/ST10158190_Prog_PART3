@@ -6,22 +6,27 @@ using System.Windows;
 
 namespace RecipeApp
 {
+    /// <summary>
+    /// This is the cs file for my main, i have some functionalities of my program here 
+    /// </summary>
+    /// ---------------------------------------------------------------------------------------- //   
     public partial class MainWindow : Window
     {
         private ObservableCollection<Recipe> recipes;
 
         public MainWindow()
         {
+            /// here i initialize componet 
             InitializeComponent();
             recipes = new ObservableCollection<Recipe>();
             RecipeListBox.ItemsSource = recipes;
         }
-
+        //this is the method for adding the recipe
         private void AddRecipe_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Validate and parse inputs
+                // here im validating and parsing inputs
                 if (string.IsNullOrWhiteSpace(RecipeNameTextBox.Text))
                 {
                     MessageBox.Show("Please enter a recipe name.");
@@ -40,24 +45,24 @@ namespace RecipeApp
                     return;
                 }
 
-                // Create new Recipe instance with constructor parameters
+                // here I'm creating a new Recipe instance with constructor parameters
                 Recipe recipe = new Recipe(RecipeNameTextBox.Text, ingredientCount, stepCount);
 
-                // Handle event if calories exceed
+                //  this is to Handle event if calories exceed
                 recipe.CaloriesExceeded += (name, totalCalories) =>
                 {
                     MessageBox.Show($"WARNING: The total calories of recipe '{name}' exceed 300. Total Calories: {totalCalories}");
                 };
 
-                // Perform recipe initialization (if these methods exist in your Recipe class)
+                // this is to perform recipe initialization (if these methods exist in your Recipe class)
                 recipe.GetIngredients(ingredientCount);
                 recipe.StoreOriginalQuantities();
                 recipe.GetSteps(stepCount);
 
-                // Add recipe to ObservableCollection
+                // this is to Add recipe to ObservableCollection
                 recipes.Add(recipe);
 
-                // Clear input fields after successful addition
+                // this part is just Clear input fields after successful addition
                 RecipeNameTextBox.Clear();
                 IngredientCountTextBox.Clear();
                 StepCountTextBox.Clear();
@@ -67,6 +72,8 @@ namespace RecipeApp
                 MessageBox.Show($"An unexpected error occurred: {ex.Message}");
             }
         }
+
+        /// This is method is for applying filters 
 
         private void ApplyFilters_Click(object sender, RoutedEventArgs e)
         {
@@ -80,9 +87,15 @@ namespace RecipeApp
                 (!maxCaloriesFilterValid || r.Ingredients.Sum(i => i.Calories) <= maxCalories)
             ).ToList();
 
+            ///here im calling a method 
             UpdateRecipeListBox(filteredRecipes);
         }
 
+        /// <summary>
+        /// This is the method that has the funcionality to display the recipe selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DisplayRecipe_Click(object sender, RoutedEventArgs e)
         {
             if (RecipeListBox.SelectedIndex == -1)
@@ -94,8 +107,11 @@ namespace RecipeApp
             var selectedRecipe = recipes[RecipeListBox.SelectedIndex];
             selectedRecipe.DisplayRecipe();
         }
+
+        //this method is to update the recipe list according to the filter applied 
         private void UpdateRecipeListBox(List<Recipe> filteredRecipes = null)
         {
+            //this checks is a certain recipe exist
             if (filteredRecipes == null && (recipes == null || recipes.Count == 0))
             {
                 MessageBox.Show("No recipes available to display.");
@@ -116,7 +132,7 @@ namespace RecipeApp
             {
                 RecipeListBox.ItemsSource = recipes;
             }
-
+            //this displays the name o te recipes 
             RecipeListBox.DisplayMemberPath = "Name";
         }
 
