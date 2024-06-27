@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
@@ -7,18 +8,25 @@ namespace RecipeApp
 {
     public partial class MainWindow : Window
     {
-        private List<Recipe> recipes = new List<Recipe>();
+        private ObservableCollection<Recipe> recipes;
 
         public MainWindow()
         {
             InitializeComponent();
+            recipes = new ObservableCollection<Recipe>();
+            RecipeListBox.ItemsSource = recipes;
         }
 
         private void AddRecipe_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string recipeName = RecipeNameTextBox.Text;
+                // Validate and parse inputs
+                if (string.IsNullOrWhiteSpace(RecipeNameTextBox.Text))
+                {
+                    MessageBox.Show("Please enter a recipe name.");
+                    return;
+                }
 
                 if (!int.TryParse(IngredientCountTextBox.Text, out int ingredientCount) || ingredientCount <= 0)
                 {
@@ -32,26 +40,34 @@ namespace RecipeApp
                     return;
                 }
 
-                Recipe recipe = new Recipe(recipeName, ingredientCount, stepCount);
+                // Create new Recipe instance with constructor parameters
+                Recipe recipe = new Recipe(RecipeNameTextBox.Text, ingredientCount, stepCount);
 
+                // Handle event if calories exceed
                 recipe.CaloriesExceeded += (name, totalCalories) =>
                 {
                     MessageBox.Show($"WARNING: The total calories of recipe '{name}' exceed 300. Total Calories: {totalCalories}");
                 };
 
+                // Perform recipe initialization (if these methods exist in your Recipe class)
                 recipe.GetIngredients(ingredientCount);
                 recipe.StoreOriginalQuantities();
                 recipe.GetSteps(stepCount);
 
+                // Add recipe to ObservableCollection
                 recipes.Add(recipe);
 
-                RecipeListBox.Items.Add(recipe.Name);
+                // Clear input fields after successful addition
+                RecipeNameTextBox.Clear();
+                IngredientCountTextBox.Clear();
+                StepCountTextBox.Clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An unexpected error occurred: {ex.Message}");
             }
         }
+
         private void ApplyFilters_Click(object sender, RoutedEventArgs e)
         {
             string ingredientFilter = IngredientFilterTextBox.Text.ToLower();
@@ -66,6 +82,7 @@ namespace RecipeApp
 
             UpdateRecipeListBox(filteredRecipes);
         }
+
         private void DisplayRecipe_Click(object sender, RoutedEventArgs e)
         {
             if (RecipeListBox.SelectedIndex == -1)
@@ -79,7 +96,7 @@ namespace RecipeApp
         }
         private void UpdateRecipeListBox(List<Recipe> filteredRecipes = null)
         {
-            if (filteredRecipes == null && recipes == null)
+            if (filteredRecipes == null && (recipes == null || recipes.Count == 0))
             {
                 MessageBox.Show("No recipes available to display.");
                 return;
@@ -88,20 +105,18 @@ namespace RecipeApp
             if (filteredRecipes != null && filteredRecipes.Count == 0)
             {
                 MessageBox.Show("No filtered recipes available to display.");
-            }
-
-            // Ensure that the property name "Name" exists in the Recipe class
-            if (typeof(Recipe).GetProperty("Name") == null)
-            {
-                MessageBox.Show("The Recipe class does not contain a property named 'Name'.");
                 return;
             }
 
-            // Set the ItemsSource to null before assigning the new ItemsSource
-            RecipeListBox.ItemsSource = null;
+            if (filteredRecipes != null)
+            {
+                RecipeListBox.ItemsSource = new ObservableCollection<Recipe>(filteredRecipes);
+            }
+            else
+            {
+                RecipeListBox.ItemsSource = recipes;
+            }
 
-            // Set the ItemsSource
-            RecipeListBox.ItemsSource = filteredRecipes ?? recipes;
             RecipeListBox.DisplayMemberPath = "Name";
         }
 

@@ -108,7 +108,9 @@
 
         <Button Content="Apply Filters" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Click="ApplyFilters_Click" Margin="0,20,0,0" HorizontalAlignment="Center"/>
 
-        <ListBox x:Name="RecipeListBox" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,20,0,0"/>
+        <ListBox x:Name="RecipeListBox" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Height="150" Margin="0,20,0,0"
+         DisplayMemberPath="Name"/>
+
 
         <Button Content="Display Selected Recipe" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Click="DisplayRecipe_Click" Margin="0,20,0,0"/>
     </Grid>
