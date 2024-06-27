@@ -4,6 +4,9 @@ using System.Windows;
 
 namespace RecipeApp
 {
+    /// <summary>
+    /// This is the recipe class where i have all the methods that ensures the app functionalities or features required for this POE Part 3 
+    /// </summary>
     public class Recipe
     {
         public string Name { get; set; }
@@ -13,9 +16,11 @@ namespace RecipeApp
         private List<string> Steps { get; set; }
         private List<double> OriginalQuantities { get; set; }
         private List<string> OriginalUnits { get; set; }
-
+        // Delegate definition for notifying when the total calories exceed 300
         public delegate void CaloriesExceededEventHandler(string recipeName, double totalCalories);
+        // Event to be triggered when the total calories exceed 300
         public event CaloriesExceededEventHandler CaloriesExceeded;
+
 
         public Recipe(string name, int ingredientCount, int stepCount)
         {
@@ -27,7 +32,9 @@ namespace RecipeApp
             OriginalUnits = new List<string>(ingredientCount);
             Steps = new List<string>(stepCount);
         }
-
+        /// <summary>
+        /// This is the method to get the ingredientes details 
+        /// </summary>
         public void GetIngredients(int ingredientCount)
         {
             for (int i = 0; i < ingredientCount; i++)
@@ -46,7 +53,9 @@ namespace RecipeApp
         {
             return Microsoft.VisualBasic.Interaction.InputBox(message, "Input");
         }
-
+        /// <summary>
+        /// This method ensures that the user enters a positive value 
+        /// </summary>
         public double GetPositiveDouble(string prompt)
         {
             double value;
@@ -61,7 +70,7 @@ namespace RecipeApp
             }
             return value;
         }
-
+        //This is to get each steps description 
         public void GetSteps(int stepCount)
         {
             for (int i = 0; i < stepCount; i++)
@@ -71,6 +80,7 @@ namespace RecipeApp
             }
         }
 
+        //this is the method to display every detail 
         public void DisplayRecipe()
         {
             string recipeDetails = $"Recipe Name: {Name}\n\nIngredients:";
@@ -106,5 +116,6 @@ namespace RecipeApp
                 OriginalUnits.Add(Ingredients[i].Unit);
             }
         }
+
     }
 }

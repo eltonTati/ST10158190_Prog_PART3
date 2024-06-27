@@ -1,5 +1,8 @@
 ﻿namespace RecipeApp
 {
+    /// <summary>
+    /// This is my ingredient class where i have the variables for ingredient details 
+    /// </summary>
     public class Ingredient
     {
         public string Name { get; set; }
